@@ -10,6 +10,8 @@ import (
 // Register slash commands in a map
 var SlashCommands = map[string]func(*discordgo.Session, *discordgo.InteractionCreate){
 	"핑": utils.PingSlashCommand,
+	"개발자" : utils.DeveloperCommand,
+	"봇정보" : utils.BotInfoCommand,
 }
 
 // InteractionCreate handles slash commands

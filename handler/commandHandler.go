@@ -13,4 +13,6 @@ func RegisterCommands() {
 
 	// Register slash commands
 	guilds.SlashCommands["핑"] = utils.PingSlashCommand
+	guilds.SlashCommands["개발자"] = utils.DeveloperCommand
+	guilds.SlashCommands["봇정보"] = utils.BotInfoCommand
 }

@@ -8,12 +8,28 @@ import (
 	"syscall"
 	"yourbot/handler" // Adjust the import path as needed
 
+	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
 
-var Token = "MTIwNjg3ODY4Njc2NzQ4MDg1Mg.GdBKlM.WmOe91D4a-EWr50VD-4lD5sJwo_WeJ-z36lM1s" // Load from environment or .env if preferred
+
+
 
 func main() {
+
+	// .env 파일 로드
+    err := godotenv.Load()
+    if err != nil {
+        fmt.Println("Error loading .env file")
+        return
+    }
+
+    // 환경 변수에서 토큰 가져오기
+    token := os.Getenv("TOKEN")
+    if token == "" {
+        fmt.Println("Token is not set in .env file")
+        return
+    }
 	// Set up the intents
 	intents := discordgo.IntentsGuilds |
 		discordgo.IntentsGuildMessages |
@@ -23,17 +39,18 @@ func main() {
 		discordgo.IntentsMessageContent   // Message Content Intent
 
 	// Create a new Discord session with the specified intents and shard configuration
-	dg, err := discordgo.New("Bot " + Token)
+	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
 		fmt.Println("Error creating Discord session:", err)
 		return
 	}
 	dg.Identify.Intents = intents
-	dg.Identify.Shard = &[2]int{0, 1} // Single shard: shard ID 0 out of 1 total shard
+	dg.Identify.Shard = nil
 
 	// Register event handlers and commands
 	handler.RegisterEventHandlers(dg)
 	handler.RegisterCommands()
+	
 
 	// Open a websocket connection to Discord
 	err = dg.Open()
@@ -51,3 +68,5 @@ func main() {
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-stop
 }
+
+
