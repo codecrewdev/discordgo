@@ -8,6 +8,8 @@ import (
 	"syscall"
 	"yourbot/handler" // Adjust the import path as needed
 
+	"yourbot/Events/Client"
+
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
@@ -20,14 +22,16 @@ func main() {
 	// .env 파일 로드
     err := godotenv.Load()
     if err != nil {
-        fmt.Println("Error loading .env file")
+        fmt.Println(".env 파일 로딩 오류")
         return
     }
+
+	client.Mongodb()
 
     // 환경 변수에서 토큰 가져오기
     token := os.Getenv("TOKEN")
     if token == "" {
-        fmt.Println("Token is not set in .env file")
+        fmt.Println(".env 파일에 토큰이 설정되지 않았습니다.")
         return
     }
 	// Set up the intents
@@ -41,7 +45,7 @@ func main() {
 	// Create a new Discord session with the specified intents and shard configuration
 	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
-		fmt.Println("Error creating Discord session:", err)
+		fmt.Println("Discord 세션 생성 중 오류 발생:", err)
 		return
 	}
 	dg.Identify.Intents = intents
@@ -55,7 +59,7 @@ func main() {
 	// Open a websocket connection to Discord
 	err = dg.Open()
 	if err != nil {
-		fmt.Println("Error opening connection:", err)
+		fmt.Println("연결을 여는 중 오류가 발생했습니다:", err)
 		return
 	}
 	defer dg.Close()
@@ -63,7 +67,7 @@ func main() {
 	// Register slash commands only after the connection is established
 	handler.RegisterSlashCommands(dg)
 
-	fmt.Println("Bot is now running. Press CTRL+C to exit.")
+	fmt.Println("봇이 실행 중입니다. 종료하려면 CTRL+C를 누르세요.")
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-stop
