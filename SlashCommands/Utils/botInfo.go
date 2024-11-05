@@ -14,33 +14,33 @@ func BotInfoCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		Type: discordgo.InteractionResponseDeferredChannelMessageWithSource,
 	})
 	if err != nil {
-		fmt.Println("Error deferring response:", err)
+		fmt.Println("응답을 연기하는 동안 오류가 발생했습니다:", err)
 		return
 	}
 
 	developerID := "534214957110394881"
 	developerUser, err := s.User(developerID)
 	if err != nil {
-		fmt.Println("Error fetching developer user:", err)
+		fmt.Println("개발자 사용자를 가져오는 동안 오류가 발생했습니다:", err)
 		return
 	}
 
 	botUser, err := s.User(s.State.User.ID)
 	if err != nil {
-		fmt.Println("Error fetching bot user:", err)
+		fmt.Println("봇 사용자를 가져오는 동안 오류가 발생했습니다:", err)
 		return
 	}
 
 	shardID := s.ShardID
 	botEmbed := &discordgo.MessageEmbed{
 		Title:       "봇 정보",
-		Description: fmt.Sprintf("> 서버 수: %d\n> 총유저 수: %d\n\u2514유저: %d명 | 봇: %d개\n\n> 개발자: %s\n\n> Go 버전: %s\n> discordgo 버전: %s\n\n샤드 #%d",
+		Description: fmt.Sprintf("> 서버 수: %d\n> 총유저 수: %d\n\u2514유저: %d명 | 봇: %d개\n\n> 개발자: %s\n\n> Golang 버전: %s\n> discordgo 버전: %s\n\n샤드 #%d",
 			len(s.State.Guilds),
 			countTotalMembers(s),
 			countMembers(s, false),
 			countMembers(s, true),
 			developerUser.Username,
-			runtime.Version(),
+			runtime.Version()[2:],
 			discordgo.VERSION,
 			shardID),
 		Color:     0x00ffcc,
@@ -53,7 +53,7 @@ func BotInfoCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		Embeds: &[]*discordgo.MessageEmbed{botEmbed},
 	})
 	if err != nil {
-		fmt.Println("Error editing interaction response:", err)
+		fmt.Println("오류 발생: 메시지를 보낼 수 없습니다.", err)
 	}
 }
 
@@ -62,7 +62,7 @@ func countTotalMembers(s *discordgo.Session) int {
 	for _, guild := range s.State.Guilds {
 		members, err := s.GuildMembers(guild.ID, "", 1000)
 		if err != nil {
-			fmt.Println("Error fetching members for guild:", guild.ID, err)
+			fmt.Println("길드 회원을 가져오는 동안 오류가 발생했습니다:", guild.ID, err)
 			continue
 		}
 		totalCount += len(members)
@@ -75,7 +75,7 @@ func countMembers(s *discordgo.Session, isBot bool) int {
 	for _, guild := range s.State.Guilds {
 		members, err := s.GuildMembers(guild.ID, "", 1000)
 		if err != nil {
-			fmt.Println("Error fetching members for guild:", guild.ID, err)
+			fmt.Println("길드 회원을 가져오는 동안 오류가 발생했습니다:", guild.ID, err)
 			continue
 		}
 		for _, member := range members {

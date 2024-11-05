@@ -23,6 +23,6 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	if command, exists := SlashCommands[i.ApplicationCommandData().Name]; exists {
 		command(s, i)
 	} else {
-		fmt.Println("Unknown slash command:", i.ApplicationCommandData().Name)
+		fmt.Println("알 수 없는 슬래시 명령:", i.ApplicationCommandData().Name)
 	}
 }

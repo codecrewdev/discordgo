@@ -22,7 +22,7 @@ var desiredCommands = []*discordgo.ApplicationCommand{
 
 func RegisterSlashCommands(dg *discordgo.Session) {
 	if dg == nil {
-		fmt.Println("Error: Discord session is nil")
+		fmt.Println("오류: Discord 세션이 없습니다.")
 		return
 	}
 
@@ -30,14 +30,14 @@ func RegisterSlashCommands(dg *discordgo.Session) {
 	for _, cmd := range desiredCommands {
 		_, err := dg.ApplicationCommandCreate(dg.State.User.ID, "", cmd)
 		if err != nil {
-			fmt.Printf("Cannot create '%s' command: %v\n", cmd.Name, err)
+			fmt.Printf("'%s' 명령을 생성할 수 없습니다. %v\n", cmd.Name, err)
 		}
 	}
 
 	// Fetch all currently registered commands
 	existingCommands, err := dg.ApplicationCommands(dg.State.User.ID, "")
 	if err != nil {
-		fmt.Println("Error fetching application commands:", err)
+		fmt.Println("애플리케이션 명령을 가져오는 중 오류가 발생했습니다:", err)
 		return
 	}
 
@@ -52,9 +52,9 @@ func RegisterSlashCommands(dg *discordgo.Session) {
 		if !desiredCommandMap[cmd.Name] {
 			err := dg.ApplicationCommandDelete(dg.State.User.ID, "", cmd.ID)
 			if err != nil {
-				fmt.Printf("Error deleting command '%s': %v\n", cmd.Name, err)
+				fmt.Printf("명령 '%s' 삭제 중 오류: %v\n", cmd.Name, err)
 			} else {
-				fmt.Printf("Deleted unnecessary command: %s\n", cmd.Name)
+				fmt.Printf("불필요한 명령을 삭제했습니다: %s\n", cmd.Name)
 			}
 		}
 	}
