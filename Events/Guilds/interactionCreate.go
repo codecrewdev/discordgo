@@ -1,8 +1,7 @@
-// Events/Guilds/interactionCreate.go
 package guilds
 
 import (
-	"fmt"
+	"log"
 	"github.com/bwmarrin/discordgo"
 	"yourbot/SlashCommands/Utils" // Adjust the import path as needed
 	"yourbot/SlashCommands/information"   // Adjust this path as necessary
@@ -21,9 +20,23 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		return
 	}
 
-	if command, exists := SlashCommands[i.ApplicationCommandData().Name]; exists {
+	commandName := i.ApplicationCommandData().Name
+	guildName := getGuildName(s, i.GuildID)
+	user := i.Member.User
+
+	if command, exists := SlashCommands[commandName]; exists {
 		command(s, i)
+		log.Printf("슬래시 명령 사용됨: %s by %s (%s) in guild %s (%s)", commandName, user.Username, user.ID, guildName, i.GuildID)
 	} else {
-		fmt.Println("알 수 없는 슬래시 명령:", i.ApplicationCommandData().Name)
+		log.Printf("\033[31m알 수 없는 슬래시 명령: %s by %s (%s) in guild %s (%s)\033[0m", commandName, user.Username, user.ID, guildName, i.GuildID)
 	}
+}
+
+// getGuildName retrieves the name of the guild by its ID
+func getGuildName(s *discordgo.Session, guildID string) string {
+	guild, err := s.State.Guild(guildID)
+	if err != nil || guild == nil {
+		return "Unknown Guild"
+	}
+	return guild.Name
 }

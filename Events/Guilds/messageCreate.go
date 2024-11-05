@@ -2,7 +2,7 @@
 package guilds
 
 import (
-	"fmt"
+	"log"
 	"strings"
 	"github.com/bwmarrin/discordgo"
 	"yourbot/Commands/info" // Adjust the import path as needed
@@ -21,10 +21,13 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	args := strings.Fields(m.Content[len(prefix):])
 	commandName := strings.ToLower(args[0])
+	guildName := getGuildName(s, m.GuildID)
 
 	if command, exists := TextCommands[commandName]; exists {
 		command(s, m, args[1:])
+		log.Printf("명령 사용됨: %s by %s (%s) in guild %s (%s)", commandName, m.Author.Username, m.Author.ID, guildName, m.GuildID)
 	} else {
-		fmt.Println("알 수 없는 명령:", commandName)
+		log.Printf("\033[31m알 수 없는 명령: %s by %s (%s) in guild %s (%s)\033[0m", commandName, m.Author.Username, m.Author.ID, guildName, m.GuildID)
 	}
 }
+

@@ -1,6 +1,7 @@
 package client
 
 import (
+    "log"
     "fmt"
     "sync"
     "github.com/bwmarrin/discordgo"
@@ -40,33 +41,33 @@ func OnGuildJoin(s *discordgo.Session, guildCreate *discordgo.GuildCreate) {
     owner := guildCreate.Guild.OwnerID
     ownerUser, err := s.User(owner)
     if err != nil {
-        fmt.Println("오너 정보를 가져오는 데 오류 발생:", err)
+        log.Println("오너 정보를 가져오는 데 오류 발생:", err)
         return
     }
 
     logMessage := fmt.Sprintf("%s(%s)에 봇 초대됨. owner = %s(%s) (서버 수: %d개)\n",
         guildCreate.Guild.Name, guildCreate.Guild.ID, ownerUser.Username, ownerUser.ID, len(s.State.Guilds))
 
-    fmt.Print(logMessage)
+    log.Print(logMessage)
 }
 
 // OnGuildRemove 이벤트 핸들러
 func OnGuildRemove(s *discordgo.Session, guildDelete *discordgo.GuildDelete) {
     guild := guildDelete.Guild
     if guild == nil {
-        fmt.Println("길드 정보가 없습니다.")
+        log.Println("길드 정보가 없습니다.")
         return
     }
 
     owner := guild.OwnerID
     ownerUser, err := s.User(owner)
     if err != nil {
-        fmt.Println("오너 정보를 가져오는 데 오류 발생:", err)
+        log.Println("오너 정보를 가져오는 데 오류 발생:", err)
         return
     }
 
     logMessage := fmt.Sprintf("%s(%s)에 봇 추방됨. owner = %s(%s) (서버 수: %d개)\n",
         guild.Name, guild.ID, ownerUser.Username, ownerUser.ID, len(s.State.Guilds))
 
-    fmt.Print(logMessage)
+    log.Print(logMessage)
 }

@@ -2,6 +2,7 @@
 package main
 
 import (
+	"log"
 	"fmt"
 	"os"
 	"os/signal"
@@ -22,7 +23,7 @@ func main() {
 	// .env 파일 로드
     err := godotenv.Load()
     if err != nil {
-        fmt.Println(".env 파일 로딩 오류")
+        log.Println(".env 파일 로딩 오류")
         return
     }
 
@@ -31,7 +32,7 @@ func main() {
     // 환경 변수에서 토큰 가져오기
     token := os.Getenv("TOKEN")
     if token == "" {
-        fmt.Println(".env 파일에 토큰이 설정되지 않았습니다.")
+        log.Println(".env 파일에 토큰이 설정되지 않았습니다.")
         return
     }
 	// Set up the intents
@@ -45,7 +46,7 @@ func main() {
 	// Create a new Discord session with the specified intents and shard configuration
 	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
-		fmt.Println("Discord 세션 생성 중 오류 발생:", err)
+		log.Println("Discord 세션 생성 중 오류 발생:", err)
 		return
 	}
 	dg.Identify.Intents = intents
@@ -59,10 +60,13 @@ func main() {
 	// Open a websocket connection to Discord
 	err = dg.Open()
 	if err != nil {
-		fmt.Println("연결을 여는 중 오류가 발생했습니다:", err)
+		log.Println("연결을 여는 중 오류가 발생했습니다:", err)
 		return
 	}
-	defer dg.Close()
+	defer func() {
+		dg.Close()
+		fmt.Println("봇 연결이 종료되었습니다.")
+	}()
 
 	// Register slash commands only after the connection is established
 	handler.RegisterSlashCommands(dg)
@@ -71,6 +75,8 @@ func main() {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-stop
+
+	fmt.Println("프로그램이 종료됩니다.")
 }
 
 
