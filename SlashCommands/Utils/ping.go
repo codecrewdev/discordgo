@@ -74,7 +74,7 @@ func PingSlashCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	// Build the embed message with latency information
 	embed := &discordgo.MessageEmbed{
 		Title: "현재 핑",
-		Color: 0x3498db, // Set a color for the embed
+		Color: 0x00ffcc, // Set a color for the embed
 		Thumbnail: &discordgo.MessageEmbedThumbnail{
 			URL: s.State.User.AvatarURL(""),
 		},

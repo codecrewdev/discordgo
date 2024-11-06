@@ -9,8 +9,6 @@ import (
 	"syscall"
 	"yourbot/handler" // Adjust the import path as needed
 
-	"yourbot/Events/Client"
-
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"
 )
@@ -26,8 +24,6 @@ func main() {
         log.Println(".env 파일 로딩 오류")
         return
     }
-
-	client.Mongodb()
 
     // 환경 변수에서 토큰 가져오기
     token := os.Getenv("TOKEN")

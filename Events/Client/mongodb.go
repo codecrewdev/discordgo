@@ -23,9 +23,9 @@ func Mongodb() *mongo.Client {
     }
 
     // 환경 변수에서 토큰 가져오기
-    mongoURI := os.Getenv("mongo")
+    mongoURI := os.Getenv("Mongodb")
     if mongoURI == "" {
-        fmt.Println(".env 파일에 토큰이 설정되지 않았습니다.")
+        fmt.Println(".env 파일에 Mongodb 가 설정되지 않았습니다.")
         return nil
     }
 

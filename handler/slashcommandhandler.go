@@ -18,6 +18,10 @@ var desiredCommands = []*discordgo.ApplicationCommand{
 		Name:        "봇정보",
 		Description: "현재 봇 정보 입니다.",
 	},
+	{
+		Name:        "가입",
+		Description: "가입 통하여 재미있는 게임 해보세요.",
+	},
 }
 
 func RegisterSlashCommands(dg *discordgo.Session) {
