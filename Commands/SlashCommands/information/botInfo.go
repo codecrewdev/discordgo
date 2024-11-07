@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"runtime"
 	"time"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -86,4 +85,3 @@ func countMembers(s *discordgo.Session, isBot bool) int {
 	}
 	return count
 }
-

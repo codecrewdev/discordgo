@@ -19,7 +19,7 @@ func AccessionCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	userID := i.Member.User.ID
 
 	// 사용자가 이미 가입했는지 확인
-	isRegistered, err := gamedb.VerifyUser(userID)
+	isRegistered, err := gamedb.IsUserRegistered(userID)
 	if err != nil {
 		fmt.Println("오류 발생: 사용자 확인 중 오류가 발생했습니다.", err)
 		return

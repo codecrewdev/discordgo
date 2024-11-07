@@ -23,9 +23,17 @@ var desiredCommands = []*discordgo.ApplicationCommand{
 		Description: "가입 통하여 재미있는 게임 해보세요.",
 	},
 	{
-		Name:        "게임정보",
-		Description: "사용자의 게임 정보를 보여줍니다.",
-	},
+        Name:        "게임정보",
+        Description: "사용자의 게임 정보를 보여줍니다.",
+        Options: []*discordgo.ApplicationCommandOption{
+            {
+                Type:        discordgo.ApplicationCommandOptionUser,
+                Name:        "유저명",
+                Description: "게임 정보를 확인할 유저명을 입력하세요",
+                Required:    false,
+            },
+        },
+    },
 }
 
 func RegisterSlashCommands(dg *discordgo.Session) {
