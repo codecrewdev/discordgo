@@ -2,11 +2,11 @@
 package handler
 
 import (
-	"yourbot/Commands/info" // Adjust this path as necessary
-	"yourbot/Events/Guilds" // Adjust this path as necessary
-	"yourbot/SlashCommands/Games"
-	"yourbot/SlashCommands/Utils"       // Adjust this path as necessary
-	"yourbot/SlashCommands/information" // Adjust this path as necessary
+	"github.com/codecrewdev/discordgo/Commands/Message/info" // Adjust this path as necessary
+	"github.com/codecrewdev/discordgo/Events/Guilds" // Adjust this path as necessary
+	"github.com/codecrewdev/discordgo/Commands/SlashCommands/Games"
+	"github.com/codecrewdev/discordgo/Commands/SlashCommands/Utils"       // Adjust this path as necessary
+	"github.com/codecrewdev/discordgo/Commands/SlashCommands/information" // Adjust this path as necessary
 )
 
 func RegisterCommands() {
@@ -18,4 +18,5 @@ func RegisterCommands() {
 	guilds.SlashCommands["개발자"] = information.DeveloperCommand
 	guilds.SlashCommands["봇정보"] = information.BotInfoCommand
 	guilds.SlashCommands["가입"] = games.AccessionCommand
+	guilds.SlashCommands["게임정보"] = games.RpdlawjdCommand
 }

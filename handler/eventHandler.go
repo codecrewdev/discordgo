@@ -3,8 +3,9 @@ package handler
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"yourbot/Events/Client" // Adjust the import path as needed
-	"yourbot/Events/Guilds" // Adjust the import path as needed
+	"github.com/codecrewdev/discordgo/Events/Client" // Adjust the import path as needed
+	"github.com/codecrewdev/discordgo/Events/Guilds" // Adjust the import path as needed
+	"github.com/codecrewdev/discordgo/Commands/SlashCommands/Games"
 )
 
 func RegisterEventHandlers(dg *discordgo.Session) {
@@ -13,4 +14,6 @@ func RegisterEventHandlers(dg *discordgo.Session) {
 	dg.AddHandler(guilds.MessageCreate)
 	dg.AddHandler(client.OnGuildJoin) 
 	dg.AddHandler(client.OnGuildRemove) 
+	// dg.AddHandler(game_button.ButtonHandler)
+	dg.AddHandler(games.ButtonHandler)
 }

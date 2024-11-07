@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"yourbot/handler" // Adjust the import path as needed
+	"github.com/codecrewdev/discordgo/handler" // Adjust the import path as needed
 
 	"github.com/joho/godotenv"
 	"github.com/bwmarrin/discordgo"

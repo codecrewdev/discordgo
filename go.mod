@@ -1,4 +1,4 @@
-module yourbot
+module github.com/codecrewdev/discordgo
 
 go 1.23.2
 

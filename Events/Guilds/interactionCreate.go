@@ -2,9 +2,9 @@ package guilds
 
 import (
 	"log"
-	games "yourbot/SlashCommands/Games"
-	"yourbot/SlashCommands/Utils"       // Adjust the import path as needed
-	"yourbot/SlashCommands/information" // Adjust this path as necessary
+	"github.com/codecrewdev/discordgo/Commands/SlashCommands/Games"
+	"github.com/codecrewdev/discordgo/Commands/SlashCommands/Utils"       // Adjust the import path as needed
+	"github.com/codecrewdev/discordgo/Commands/SlashCommands/information" // Adjust this path as necessary
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -15,6 +15,7 @@ var SlashCommands = map[string]func(*discordgo.Session, *discordgo.InteractionCr
 	"개발자" : information.DeveloperCommand,
 	"봇정보" : information.BotInfoCommand,
 	"가입" : games.AccessionCommand,
+	"게임정보" : games.RpdlawjdCommand,
 }
 
 // InteractionCreate handles slash commands

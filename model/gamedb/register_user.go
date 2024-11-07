@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"yourbot/Events/Client"
+	"github.com/codecrewdev/discordgo/Events/Client" // 클라이언트 패키지 경로 확인
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -49,5 +49,5 @@ func Accessiondb(userID string, money int, joinTime time.Time) {
 		return
 	}
 
-	fmt.Printf("%s 데이터가 성공적으로 저장되었습니다.", userID)
+	fmt.Printf("%s 데이터가 성공적으로 저장되었습니다.\n", userID)
 }

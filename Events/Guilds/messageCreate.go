@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 	"github.com/bwmarrin/discordgo"
-	"yourbot/Commands/info" // Adjust the import path as needed
+	"github.com/codecrewdev/discordgo/Commands/Message/info" // Adjust the import path as needed
 )
 
 const prefix = "!"
