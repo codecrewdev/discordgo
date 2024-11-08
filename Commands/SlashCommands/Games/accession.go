@@ -30,7 +30,6 @@ func AccessionCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			Title:       "오류",
 			Description: "이미 가입한 사용자입니다..\n\n-# `/탈퇴`으로 탈퇴하실 수 있어요.",
 			Color:       0xFF0000,
-			
 		}
 		err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
@@ -81,6 +80,50 @@ func AccessionCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	if err != nil {
 		fmt.Println("오류 발생: 메시지를 보내는 동안 오류가 발생했습니다.", err)
 	}
+
+	// 버튼 비활성화 타이머 실행
+	go disableButtonsAfterTimeout(s, i, 30*time.Second)
+}
+
+// 버튼을 30초 후 비활성화하는 함수
+func disableButtonsAfterTimeout(s *discordgo.Session, i *discordgo.InteractionCreate, duration time.Duration) {
+	time.Sleep(duration)
+
+	// 비활성화된 버튼 생성
+	disabledButtons := []discordgo.MessageComponent{
+		discordgo.Button{
+			Label:    "동의",
+			Style:    discordgo.SuccessButton,
+			CustomID: "agree_button",
+			Disabled: true,
+		},
+		discordgo.Button{
+			Label:    "미동의",
+			Style:    discordgo.DangerButton,
+			CustomID: "disagree_button",
+			Disabled: true,
+		},
+	}
+
+	// 비활성화된 버튼을 포함한 액션 행 생성
+	disabledActionRow := discordgo.ActionsRow{
+		Components: disabledButtons,
+	}
+
+	Embed := &discordgo.MessageEmbed{
+		Title:       "가입하기",
+		Description: "[서비스 이용약관]\n[개인정보처리방침]\n\n-# 위 내용 동의하면 아래있는 `동의버튼` 클릭해주세요!",
+		Color:       0x00ffcc,
+	}
+
+	// 메시지를 업데이트하여 버튼을 비활성화
+	_, err := s.InteractionResponseEdit(i.Interaction, &discordgo.WebhookEdit{
+		Embeds:    &[]*discordgo.MessageEmbed{Embed},
+		Components: &[]discordgo.MessageComponent{disabledActionRow},
+	})
+	if err != nil {
+		fmt.Println("오류 발생: 버튼 비활성화 업데이트 중 오류가 발생했습니다.", err)
+	}
 }
 
 // ButtonHandler는 버튼 클릭 이벤트를 처리하는 함수입니다.
@@ -121,7 +164,7 @@ func ButtonHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 		agreeEmbed := &discordgo.MessageEmbed{
 			Title:       "가입 완료",
-			Description: "이용약관 및 개인정보처리방침에 동의하셨습니다. 이제 서비스를 이용하실 수 있습니다.",
+			Description: "이용약관 및 개인정보처리방침에 동의하셨습니다.\n이제 서비스를 이용하실 수 있습니다.",
 			Color:       0x00FF00,
 		}
 		err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
@@ -138,7 +181,7 @@ func ButtonHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		// 미동의 버튼 클릭 시 처리
 		disagreeEmbed := &discordgo.MessageEmbed{
 			Title:       "가입 취소",
-			Description: "이용약관 및 개인정보처리방침에 동의하지 않으셨습니다. 가입이 취소되었습니다.",
+			Description: "이용약관 및 개인정보처리방침에 동의하지 않으셨습니다.\n가입이 취소되었습니다.",
 			Color:       0xFF0000,
 		}
 		err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
