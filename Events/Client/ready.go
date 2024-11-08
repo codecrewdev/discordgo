@@ -30,7 +30,7 @@ func OnGuildJoin(s *discordgo.Session, guildCreate *discordgo.GuildCreate) {
     initialGuildsMu.Lock()
     defer initialGuildsMu.Unlock()
 
-    // 초기 길드 목록에 존재하는 경우라면 처리하지 않음
+    // 초기 길드 목록에 존재하는 경우라면 처리하지 않음 (이미 있는 길드)
     if _, exists := initialGuilds[guildCreate.Guild.ID]; exists {
         // 초기 길드 목록에서 제거 (처음 이후에는 새로운 초대를 처리하기 위해)
         delete(initialGuilds, guildCreate.Guild.ID)
@@ -38,6 +38,22 @@ func OnGuildJoin(s *discordgo.Session, guildCreate *discordgo.GuildCreate) {
     }
 
     // 새로운 길드에 초대된 경우 처리
+    logGuildJoin(s, guildCreate)
+}
+
+// OnGuildRemove 이벤트 핸들러
+func OnGuildRemove(s *discordgo.Session, guildDelete *discordgo.GuildDelete) {
+    guild := guildDelete.Guild
+    if guild == nil {
+        log.Println("길드 정보가 없습니다.")
+        return
+    }
+
+    logGuildRemove(s, guild)
+}
+
+// 새로운 길드에 초대되었을 때 로그를 남기는 함수
+func logGuildJoin(s *discordgo.Session, guildCreate *discordgo.GuildCreate) {
     owner := guildCreate.Guild.OwnerID
     ownerUser, err := s.User(owner)
     if err != nil {
@@ -51,14 +67,8 @@ func OnGuildJoin(s *discordgo.Session, guildCreate *discordgo.GuildCreate) {
     log.Print(logMessage)
 }
 
-// OnGuildRemove 이벤트 핸들러
-func OnGuildRemove(s *discordgo.Session, guildDelete *discordgo.GuildDelete) {
-    guild := guildDelete.Guild
-    if guild == nil {
-        log.Println("길드 정보가 없습니다.")
-        return
-    }
-
+// 길드에서 봇이 제거되었을 때 로그를 남기는 함수
+func logGuildRemove(s *discordgo.Session, guild *discordgo.Guild) {
     owner := guild.OwnerID
     ownerUser, err := s.User(owner)
     if err != nil {

@@ -46,7 +46,7 @@ func main() {
 		return
 	}
 	dg.Identify.Intents = intents
-	dg.Identify.Shard = nil
+	dg.Identify.Shard = &[2]int{0, 2} // 이 부분을 변경하여 다른 샤드를 설정하세요
 
 	// Register event handlers and commands
 	handler.RegisterEventHandlers(dg)

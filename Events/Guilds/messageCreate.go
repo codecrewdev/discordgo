@@ -12,6 +12,7 @@ const prefix = "!"
 
 var TextCommands = map[string]func(*discordgo.Session, *discordgo.MessageCreate, []string){
 	"핑": info.PingCommand,
+	"ping": info.PingCommand,
 }
 
 func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {

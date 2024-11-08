@@ -12,6 +12,7 @@ import (
 func RegisterCommands() {
 	// Register text commands
 	guilds.TextCommands["핑"] = info.PingCommand
+	guilds.TextCommands["ping"] = info.PingCommand
 
 	// Register slash commands
 	guilds.SlashCommands["핑"] = utils.PingSlashCommand
